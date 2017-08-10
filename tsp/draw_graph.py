@@ -1,5 +1,11 @@
-from graphviz import Graph
 from copy import copy
+
+graph_module_imported = True
+
+try:
+    from graphviz import Graph
+except ImportError:
+    graph_module_imported = False
 
 class DrawGraph:
     """
@@ -43,6 +49,10 @@ class DrawGraph:
         :param solution: solução para o grafo
         :param solution_name: nome da solução
         """
+        if not graph_module_imported:
+            print("Os módulos graphviz e pydot não estão instalados, portanto," +
+            " não será gerada a imagem de representação do grafo")
+            return
         dot_graph = Graph(solution_name, None, None, None, 'svg', 'dot')
         #dot_graph.graph_attr['rankdir'] = 'LR'
         for (index, node) in enumerate(solution):

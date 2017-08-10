@@ -1,9 +1,10 @@
+import sys
+
 from tsp.graph_builder import GraphBuilder
-from tsp.draw_graph import DrawGraph
 from tsp.heuristics.greedy import GreedyHeuristic
 from tsp.heuristics.insertion import InsertionHeuristic
+from tsp.draw_graph import DrawGraph
 
-import sys
 
 if __name__ == "__main__":
 
