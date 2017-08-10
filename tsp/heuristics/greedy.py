@@ -8,6 +8,7 @@ class GreedyHeuristic(BaseHeuristic):
     def __init__(self): 
         super(GreedyHeuristic, self).__init__()
 
+
     def solve(self, graph):
         super(GreedyHeuristic, self).solve(graph)
         

@@ -11,6 +11,35 @@ class Graph:
         self.nodes = []
         self.start_node = None
 
+    def __str__(self):
+        self_str = ''
+        for (index, node) in enumerate(self.nodes):
+            self_str += '%f - %s\n' % (index, str(node))
+        self_str += '\n'
+        map_node_index = self.get_map_nodes_index()
+        for (index_a, node) in enumerate(self.nodes):
+            for link in node.get_links():
+                index_b = map_node_index[link.destination]
+                if index < index_b:
+                    self_str += '(%f, %f) - %f\n' % (index, index_b, link.cost)
+        return self_str
+
+    def __repr__(self):
+        return str(self)
+
+
+    def get_map_nodes_index(self):
+        """
+        Realiza um mapeamento dos nós do grafo para seus respectivos índices
+
+        :param graph: grafo
+        :return: mapeamento de nós para índices
+        """
+        map_node_index = dict()
+        for (index, node) in enumerate(graph.nodes):
+            map_node_index[node] = index
+        return map_node_index
+
     def add_node(self, node):
         """
         Adiciona um nó ao grafo
@@ -42,6 +71,7 @@ class Graph:
                 if node != destination_node:
                     node.add_link(destination_node, cost)
 
+    
     def set_starting_node(self, node):
         """
         Define o nó inicial do grafo
@@ -71,11 +101,28 @@ class GraphNode:
     Classe que representa um nó do grafo.
     """
 
+    count_index = 0
+
     def __init__(self, data):
+        self.index = GraphNode.count_index
+        GraphNode.count_index += 1
+        self.links_map = dict()
         self.links = []
         self.prize = data[0]
         self.penality = data[1]
         self.visited = False
+
+    def __str__(self):
+        return '(%f, %f)' % (self.prize, self.penality)
+
+    def __repr__(self):
+        return str(self)
+
+    def __hash__(self):
+        return self.index
+
+    def __eq__(self, other):
+        return isinstance(other, GraphNode) and self.index == other.index
 
     def add_link(self, destination, cost):
         """
@@ -84,6 +131,7 @@ class GraphNode:
         :param destination: nó que será alcançado por essa aresta
         :param cost: custo de se movimentar por essa aresta
         """
+        self.links_map[destination] = cost
         link = GraphLink(destination, cost)
         self.links.append(link)
 
@@ -94,6 +142,21 @@ class GraphNode:
         :return: arestas que saem deste nó.
         """
         return self.links
+
+    def get_links_mean(self):
+        mean = 0
+        for link in self.links:
+            mean += link.cost
+        return mean / len(self.links)
+
+
+    def get_cost_to(self, node):
+        """
+        Retorna o custo da aresta que conecta esse nó com o outro especificado.
+
+        :return: custo da aresta que conecta o nó com o nó especificado.
+        """
+        return self.links_map[node]
 
     def get_link_to(self, node):
         """
@@ -116,3 +179,9 @@ class GraphLink:
     def __init__(self, destination, cost):
         self.destination = destination
         self.cost = cost
+
+    def __str__(self):
+        return '(%f, %f)' % (self.destination, self.cost)
+
+    def __repr__(self):
+        return str(self)

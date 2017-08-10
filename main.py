@@ -1,4 +1,5 @@
 from tsp.graph_builder import GraphBuilder
+from tsp.draw_graph import DrawGraph
 from tsp.heuristics.greedy import GreedyHeuristic
 from tsp.heuristics.insertion import InsertionHeuristic
 
@@ -23,6 +24,14 @@ if __name__ == "__main__":
 
     insertion_heuristic = InsertionHeuristic()
     insertion_total_cost = insertion_heuristic.solve(graph)
+
+    draw_graph = DrawGraph()
+    index_sep_dir = filename.rindex('/') + 1
+    filename_no_dir = filename[index_sep_dir:]
+    index_dot = filename_no_dir.index('.')
+    filename_no_dir = filename_no_dir[:index_dot]
+    solution_name = 'solInsertion' + filename_no_dir
+    draw_graph.draw(graph, insertion_heuristic.visitation_order, solution_name)
 
     print("Custo total do algoritmo guloso: ", greedy_total_cost)
     print("Custo total do algoritmo de inserção: ", insertion_total_cost)
