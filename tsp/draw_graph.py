@@ -53,8 +53,7 @@ class DrawGraph:
             print("Os módulos graphviz e pydot não estão instalados, portanto," +
             " não será gerada a imagem de representação do grafo")
             return
-        dot_graph = Graph(solution_name, None, None, None, 'png', 'circo')
-        dot_graph.graph_attr['dpi'] = '480'
+        dot_graph = Graph(solution_name, None, None, None, 'svg', 'circo')
         for (index, node) in enumerate(solution):
             name = str(index)
             label = '(%d, %d)' % (node.prize, node.penality)

@@ -1,0 +1,10 @@
+Requisitos:
+- Python 3
+
+Opcionais:
+Pydot e Graphviz (gera um SVG do grafo com o custo minimizado)
+
+Como executar:
+
+python main.py <arquivo>
+Ex: python main.py data/v10.txt
