@@ -17,7 +17,7 @@ class GraphBuilder:
     """
 
     def __init__(self):
-        self.name = None
+        pass
 
     def build(self, file):
         """

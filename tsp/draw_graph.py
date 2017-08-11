@@ -13,7 +13,7 @@ class DrawGraph:
 
     """
     def __init__(self):
-        self.name = None
+        pass
 
 
     def get_edges(self, graph, solution, map_node_index):
@@ -41,7 +41,7 @@ class DrawGraph:
         return edges
 
 
-    def draw(self, graph, solution, solution_name):
+    def draw(self, graph, solution, solution_name, last_inserted=None):
         """
         Desenha o grafo mostrando a solução
 
@@ -53,12 +53,15 @@ class DrawGraph:
             print("Os módulos graphviz e pydot não estão instalados, portanto," +
             " não será gerada a imagem de representação do grafo")
             return
-        dot_graph = Graph(solution_name, None, None, None, 'svg', 'dot')
-        #dot_graph.graph_attr['rankdir'] = 'LR'
+        dot_graph = Graph(solution_name, None, None, None, 'png', 'circo')
+        dot_graph.graph_attr['dpi'] = '480'
         for (index, node) in enumerate(solution):
             name = str(index)
             label = '(%d, %d)' % (node.prize, node.penality)
-            dot_graph.node(name, label)
+            if last_inserted != None and node == last_inserted:
+                dot_graph.node(name, label, color='deepskyblue1', style="filled")
+            else:
+                dot_graph.node(name, label)
 
         N = len(solution)
         for index in range(N-1):
@@ -79,43 +82,4 @@ class DrawGraph:
             label = str(int(cost))
             dot_graph.edge(start_node_name, end_node_name, label)
 
-    
-        # for (index, node) in enumerate(graph.nodes):
-        #     name = str(index)
-        #     label = '(%d, %d)' % (node.prize, node.penality)
-        #     if node == solution[0]:
-        #         dot_graph.node(name, label, color='red', style="filled")
-        #     else:
-        #         dot_graph.node(name, label)
-
-        # map_node_index = self.get_map_nodes_index(graph)
-        # edges = self.get_edges(graph, solution, map_node_index)
-
-        # for (index, node) in enumerate(graph.nodes):
-        #     for link in node.links:
-        #         index_dest = map_node_index[link.destination]
-        #         if index < index_dest: 
-        #             start_node_name = str(index)
-        #             end_node_name = str(index_dest)
-        #             label = str(link.cost)
-        #             if (index, index_dest) in edges:
-        #                 dot_graph.edge(start_node_name, end_node_name, label)
-                    #else:
-                        #dot_graph.edge(start_node_name, end_node_name, label, color='red')
-
-        dot_graph.save(solution_name + '.dot')
         dot_graph.render(solution_name, None, False, True)
-
-        # for (index, node) in enumerate(graph.nodes):
-        #     for link in node.links:
-        #         index_dest = map_node_index[link.destination]
-        #         if index < index_dest: 
-        #             start_node_name = 'n' + str(index)
-        #             end_node_name = 'n' + str(index_dest)
-        #             label = str(link.cost)
-        #             if (index, index_dest) not in edges:
-        #                 dot_graph.edge(start_node_name, end_node_name, label, color='red')
-
-        # solution_name += "Compl"
-        # dot_graph.save(solution_name + '.dot')
-        # dot_graph.render(solution_name, None, True, True)
